@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #actions }
-GamePlaying >> cardIsPlayed [
+GamePlaying >> assertCanPlayCard [
 	
 ]
 

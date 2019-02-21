@@ -6,5 +6,5 @@ Class {
 
 { #category : #actions }
 Repeat >> activateCardEffectFor: aPlayer in: aGame [
-	aGame lastTileActivated key activateEffectforGame: aGame forPlayer: aGame lastTileActivated value
+	aGame lastTileActivated activateEffectforGame: aGame forPlayer: aGame lastTileActivator
 ]
