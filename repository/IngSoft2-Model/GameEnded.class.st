@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #actions }
-GameEnded >> cardIsPlayed [
+GameEnded >> assertCanPlayCard [
 	^AssertionFailure signal: 'Cards can not be played after the game has ended'
 ]
 

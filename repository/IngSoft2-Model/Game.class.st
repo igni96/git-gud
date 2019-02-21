@@ -142,7 +142,12 @@ Game >> lastCardActivated [
 
 { #category : #accessing }
 Game >> lastTileActivated [
-^lastTileActivated 
+	^ (lastTileActivated key)
+]
+
+{ #category : #accessing }
+Game >> lastTileActivator [
+	^ (lastTileActivated value)
 ]
 
 { #category : #accessing }
@@ -155,7 +160,7 @@ Game >> placeOf: aPlayer [
 { #category : #actions }
 Game >> playAccelerationFromPlayer: aPlayer [
 	| firstCardFound |
-	stateOfGame cardIsPlayed.
+	stateOfGame assertCanPlayCard.
 	self assertPlayerExists: aPlayer.
 	firstCardFound := (playerHands at: aPlayer)
 		detect: [ :card | card class = Acceleration ]
@@ -169,7 +174,7 @@ Game >> playAccelerationFromPlayer: aPlayer [
 { #category : #actions }
 Game >> playCancellationFromPlayer: aPlayer ForCard: aCard [
 	| firstCardFound |
-	stateOfGame cardIsPlayed.
+	stateOfGame assertCanPlayCard.
 	self assertPlayerExists: aPlayer.
 	self activePermanentCards values
 		detect: [ :cardsOfPlayer | cardsOfPlayer includes: aCard ]
@@ -186,7 +191,7 @@ Game >> playCancellationFromPlayer: aPlayer ForCard: aCard [
 { #category : #actions }
 Game >> playOverloadFromPlayer: aPlayer toPlayer: targetPlayer [
 	| firstCardFound |
-	stateOfGame cardIsPlayed.
+	stateOfGame assertCanPlayCard.
 	self assertPlayerExists: aPlayer.
 	self assertPlayerExists: targetPlayer.
 	 firstCardFound := (playerHands at: aPlayer)
@@ -202,7 +207,7 @@ Game >> playOverloadFromPlayer: aPlayer toPlayer: targetPlayer [
 { #category : #actions }
 Game >> playRedoFromPlayer: aPlayer for: aTarget [
 	| firstCardFound |
-	stateOfGame cardIsPlayed.
+	stateOfGame assertCanPlayCard.
 	self assertPlayerExists: aPlayer.
 	(Card allSubclasses includes: aTarget class) | (self players includes: aTarget)
 		ifFalse: [ AssertionFailure signal: 'The target for Redo is not correct for this card' ].
@@ -215,10 +220,10 @@ Game >> playRedoFromPlayer: aPlayer for: aTarget [
 { #category : #actions }
 Game >> playRepeatFromPlayer: aPlayer [
 	| firstCardFound |
-	stateOfGame cardIsPlayed.
+	stateOfGame assertCanPlayCard.
 	self assertPlayerExists: aPlayer.
 	firstCardFound := (playerHands at: aPlayer) detect: [ :card | card class = Repeat ] ifNone: [ AssertionFailure signal: 'The player does not possess an Repeat card' ].
-	firstCardFound activateCardEffectFor: lastTileActivated value in: self.
+	firstCardFound activateCardEffectFor: self lastTileActivator in: self.
 	lastCardActivated := firstCardFound.
 	(playerHands at: aPlayer) remove: firstCardFound.
 	self recalculateLaps
@@ -227,7 +232,7 @@ Game >> playRepeatFromPlayer: aPlayer [
 { #category : #actions }
 Game >> playSpeedFromPlayer: aPlayer toPlayer: targetPlayer [
 	| firstCardFound |
-	stateOfGame cardIsPlayed.
+	stateOfGame assertCanPlayCard.
 	self assertPlayerExists: aPlayer.
 	self assertPlayerExists: targetPlayer.
 	firstCardFound := (playerHands at: aPlayer)

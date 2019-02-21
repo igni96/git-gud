@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #actions }
-GameState >> cardIsPlayed [
+GameState >> assertCanPlayCard [
 	self subclassResponsibility 
 ]
 
