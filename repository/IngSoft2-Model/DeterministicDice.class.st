@@ -15,15 +15,14 @@ DeterministicDice class >> withFutureThrows: aThrowsArray andSides: aNumberOfSid
 ]
 
 { #category : #initialization }
-DeterministicDice >> initializeWithFutureThrows: aThrowsArray andSides: aNumberOfSides [
-	quantityOfSides :=aNumberOfSides.
-	futureThrows := aThrowsArray.
-	nextThrow := 0
+DeterministicDice >> initializeWithFutureThrows: throws andSides: aNumberOfSides [
+	quantityOfSides := aNumberOfSides.
+	nextThrow := 0.
+	futureThrows := throws select: [ :number | number between: 0 and: aNumberOfSides].
 ]
 
 { #category : #actions }
 DeterministicDice >> throw [
-	futureThrows := futureThrows select: [ :number | number < ( quantityOfSides + 1) & (number > 0) ].
 	nextThrow := nextThrow + 1.
 	^ futureThrows at: nextThrow
 ]

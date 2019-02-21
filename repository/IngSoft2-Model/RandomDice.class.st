@@ -17,8 +17,5 @@ RandomDice >> initializeOfSides: aNumberOfSides [
 
 { #category : #actions }
 RandomDice >> throw [
-	| aRandomSeries aRandomInt |
-	aRandomSeries := Random new.
-	aRandomInt := aRandomSeries nextInt: quantityOfSides.
-	^ aRandomInt
+	^ quantityOfSides atRandom
 ]
