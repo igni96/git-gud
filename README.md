@@ -1,7 +1,7 @@
 # Ingenieria del Software II - git-gud
 
-[![Build Status](https://travis-ci.org/uca-is2-2018/git-gud.svg?branch=master)](https://travis-ci.org/uca-is2-2018/git-gud)
-[![Coverage Status](https://coveralls.io/repos/github/uca-is2-2018/git-gud/badge.svg?branch=master)](https://coveralls.io/github/uca-is2-2018/git-gud?branch=master)
+[![Build Status](https://travis-ci.org/igni96/git-gud.svg?branch=master)](https://travis-ci.org/igni96/git-gud)
+[![Coverage Status](https://coveralls.io/repos/github/igni96/git-gud/badge.svg?branch=master)](https://coveralls.io/github/igni96/git-gud?branch=master)
 
 ## Metacello
 
