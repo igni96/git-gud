@@ -60,18 +60,18 @@ GameTestWithCards >> testAccelerationCardAffectsTurnOfPlayer [
 		usingDeck: self createAccelerationCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
 	game playAccelerationFromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 7.
+	self assert: (game spaceOf: john) equals: 7.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 3.
+	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -251,35 +251,35 @@ GameTestWithCards >> testCardsAreNotPlayableAfterGameEnds [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 11.
+	self assert: (game spaceOf: john) equals: 11.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 3.
+	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 10.
+	self assert: (game spaceOf: john) equals: 10.
 	self assert: (game lapOf: john) equals: 1.
-	self assert: (game positionOf: tim) equals: 4.
+	self assert: (game spaceOf: tim) equals: 4.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: tim.
 	game turnOf: john.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
-	self assert: (game positionOf: john) equals: 4.
+	self assert: (game spaceOf: john) equals: 4.
 	self assert: (game lapOf: john) equals: 2.
-	self assert: (game positionOf: tim) equals: 5.
+	self assert: (game spaceOf: tim) equals: 5.
 	self assert: (game lapOf: tim) equals: 0.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
 	self assert: game hasEnded.
@@ -339,18 +339,18 @@ GameTestWithCards >> testOverloadCardAffectsTurnOfPlayer [
 		usingDeck: self createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
 	game playOverloadFromPlayer: john toPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 11.
+	self assert: (game spaceOf: tim) equals: 11.
 	self assert: (game lapOf: tim) equals: -1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -577,14 +577,14 @@ GameTestWithCards >> testRedoCardWithNoCardsActivated [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game playRedoFromPlayer: tim for: john.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0
 ]
 
@@ -613,20 +613,20 @@ GameTestWithCards >> testRepeatCardIsRedone [
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 2.
+	self assert: (game spaceOf: john) equals: 2.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game playRepeatFromPlayer: tim.
-	self assert: (game positionOf: john) equals: 18.
+	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
 	game playRedoFromPlayer: tim for: john.
-	self assert: (game positionOf: john) equals: 14.
+	self assert: (game spaceOf: john) equals: 14.
 	self assert: (game lapOf: john) equals: -1.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
 ]
@@ -647,16 +647,16 @@ GameTestWithCards >> testRepeatCardIsUsed [
 		usingDeck: self createRepeatCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	game playRepeatFromPlayer: tim.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 2.
+	self assert: (game spaceOf: john) equals: 2.
 	self assert: (game lapOf: john) equals: 0.
 	game playRepeatFromPlayer: tim.
-	self assert: (game positionOf: john) equals: 18.
+	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1
 ]
 
@@ -684,14 +684,14 @@ GameTestWithCards >> testRepeatCardWithNoTilesActivated [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game playRepeatFromPlayer: tim.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0
 ]
 
@@ -711,18 +711,18 @@ GameTestWithCards >> testSpeedCardAffectsTurnOfPlayer [
 		usingDeck: self createSpeedCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
 	game playSpeedFromPlayer: john toPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 3.
+	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
