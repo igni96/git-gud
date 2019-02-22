@@ -102,20 +102,20 @@ GameTestWithoutCards >> testAtomicBombMovesPlayers [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0
 ]
 
@@ -135,20 +135,20 @@ GameTestWithoutCards >> testCantBeWonWhilePlaying [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 11.
+	self assert: (game spaceOf: john) equals: 11.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	self should: [ game wonBy: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has not ended yet' ].
 	game turnOf: tim.
@@ -171,35 +171,35 @@ GameTestWithoutCards >> testGameCanEnd [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 11.
+	self assert: (game spaceOf: john) equals: 11.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 3.
+	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 10.
+	self assert: (game spaceOf: john) equals: 10.
 	self assert: (game lapOf: john) equals: 1.
-	self assert: (game positionOf: tim) equals: 4.
+	self assert: (game spaceOf: tim) equals: 4.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: tim.
 	game turnOf: john.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
-	self assert: (game positionOf: john) equals: 4.
+	self assert: (game spaceOf: john) equals: 4.
 	self assert: (game lapOf: john) equals: 2.
-	self assert: (game positionOf: tim) equals: 5.
+	self assert: (game spaceOf: tim) equals: 5.
 	self assert: (game lapOf: tim) equals: 0.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
 	self assert: game hasEnded
@@ -240,31 +240,31 @@ GameTestWithoutCards >> testGamePlaceOfReturnsOrderOfPlayers [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
 	game turnOf: john.
 	game turnOf: tim.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 10.
+	self assert: (game spaceOf: john) equals: 10.
 	self assert: (game lapOf: john) equals: 1.
-	self assert: (game positionOf: tim) equals: 4.
+	self assert: (game spaceOf: tim) equals: 4.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: tim.
 	game turnOf: john.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
-	self assert: (game positionOf: john) equals: 4.
+	self assert: (game spaceOf: john) equals: 4.
 	self assert: (game lapOf: john) equals: 2.
-	self assert: (game positionOf: tim) equals: 5.
+	self assert: (game spaceOf: tim) equals: 5.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: game hasEnded.
 	self assert: (game placeOf: tim) equals: 2
@@ -286,12 +286,12 @@ GameTestWithoutCards >> testGamePlayerThrowsDice [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0
 ]
 
@@ -311,16 +311,16 @@ GameTestWithoutCards >> testGameRespectsTurns [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'It´s not the player´s turn' ].
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0
 ]
 
@@ -340,9 +340,9 @@ GameTestWithoutCards >> testGameStartingPositionIsOneAndLapIsZero [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: john) equals: 0
 ]
 
@@ -362,15 +362,15 @@ GameTestWithoutCards >> testGameWonByJohn [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game placeOf: tim) equals: 2.
 	game turnOf: john.
@@ -378,16 +378,16 @@ GameTestWithoutCards >> testGameWonByJohn [
 	game turnOf: john.
 	game turnOf: tim.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 10.
+	self assert: (game spaceOf: john) equals: 10.
 	self assert: (game lapOf: john) equals: 1.
-	self assert: (game positionOf: tim) equals: 4.
+	self assert: (game spaceOf: tim) equals: 4.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: tim.
 	game turnOf: john.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
-	self assert: (game positionOf: john) equals: 4.
+	self assert: (game spaceOf: john) equals: 4.
 	self assert: (game lapOf: john) equals: 2.
-	self assert: (game positionOf: tim) equals: 5.
+	self assert: (game spaceOf: tim) equals: 5.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: game hasEnded.
 	self assert: (game placeOf: tim) equals: 2.
@@ -410,15 +410,15 @@ GameTestWithoutCards >> testMoonWalkMovesOtherPlayers [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 3.
+	self assert: (game spaceOf: john) equals: 3.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 3.
+	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: john) equals: 0
 ]
 
@@ -438,18 +438,18 @@ GameTestWithoutCards >> testNegativeLapsExist [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 18.
+	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1.
-	self assert: (game positionOf: tim) equals: 18.
+	self assert: (game spaceOf: tim) equals: 18.
 	self assert: (game lapOf: tim) equals: -1.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 15.
+	self assert: (game spaceOf: john) equals: 15.
 	self assert: (game lapOf: john) equals: -1
 ]
 
@@ -469,15 +469,15 @@ GameTestWithoutCards >> testPlayerDoesNotExist [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	self should: [ game positionOf: 'pepe' ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not exist' ].
+	self should: [ game spaceOf: 'pepe' ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not exist' ].
 	self should: [ game lapOf: 'pepe' ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not exist' ].
 	self should: [ game placeOf: 'pepe' ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not exist' ].
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0
 ]
 
@@ -497,18 +497,18 @@ GameTestWithoutCards >> testSpeedUpMovesPlayer [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 15.
+	self assert: (game spaceOf: john) equals: 15.
 	self assert: (game lapOf: john) equals: 0
 ]
 
@@ -528,19 +528,19 @@ GameTestWithoutCards >> testWormHoleMovesPlayer [
 		usingDeck: GameTestWithCards new createOverloadCardsGenerator
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
-	self assert: (game positionOf: john) equals: 1.
+	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 1.
+	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
 	game turnOf: tim.
-	self assert: (game positionOf: john) equals: 6.
+	self assert: (game spaceOf: john) equals: 6.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0.
 	game turnOf: john.
-	self assert: (game positionOf: john) equals: 7.
+	self assert: (game spaceOf: john) equals: 7.
 	self assert: (game lapOf: john) equals: 0.
-	self assert: (game positionOf: tim) equals: 2.
+	self assert: (game spaceOf: tim) equals: 2.
 	self assert: (game lapOf: tim) equals: 0
 ]

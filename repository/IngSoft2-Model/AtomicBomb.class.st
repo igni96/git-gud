@@ -6,5 +6,5 @@ Class {
 
 { #category : #actions }
 AtomicBomb >> activateEffectforGame: aGame forPlayer: aPlayer [
-	aGame players do: [ :player | aGame changePositionOf: player by: (aGame positionOf: player) negated + 1 ]
+	aGame players do: [ :player | aGame changePositionOf: player by: (aGame spaceOf: player) negated + 1 ]
 ]
