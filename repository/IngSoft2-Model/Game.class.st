@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'positions',
-		'laps',
 		'dices',
 		'turn',
 		'stateOfGame',
