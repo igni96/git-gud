@@ -21,3 +21,13 @@ cards add: aCard.
 DiscardDeck >> initializeWithoutCards [
 cards:=OrderedCollection new.
 ]
+
+{ #category : #'as yet unclassified' }
+DiscardDeck >> refillDeck [
+	| aGroupOfCards |
+	cards isEmpty
+		ifTrue: [ AssertionFailure signal: 'The discard deck is empty' ]
+		ifFalse: [ aGroupOfCards := cards shuffled.
+			cards removeAll.
+			^ aGroupOfCards ]
+]

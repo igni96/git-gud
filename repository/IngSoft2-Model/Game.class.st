@@ -12,7 +12,8 @@ Class {
 		'playerHands',
 		'activePermanentCards',
 		'lastTileActivated',
-		'lastCardActivated'
+		'lastCardActivated',
+		'discardDeck'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -88,7 +89,7 @@ Game >> currentTilefor: aPlayer [
 
 { #category : #actions }
 Game >> drawCardForPlayer: aPlayer [
-	(self handOf: aPlayer) add: cardGenerator drawCard
+	(self handOf: aPlayer) add: (cardGenerator drawCardForGame: self)
 ]
 
 { #category : #accessing }
@@ -108,8 +109,8 @@ Game >> initializePlayedBy: aGroupOfPlayers throwing: aGroupOfDices onABoard: aB
 	turn := 1.
 	stateOfGame := GamePlaying new.
 	positions := Dictionary new.
-	laps := Dictionary new.
 	cardGenerator := aDeck.
+	discardDeck:= DiscardDeck atStart .
 	winningLap := aNumberOfLaps.
 	playerHands := Dictionary new.
 	activePermanentCards := Dictionary new.
@@ -152,6 +153,7 @@ Game >> playAccelerationFromPlayer: aPlayer [
 	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Acceleration ] ifNone: [ AssertionFailure signal: 'The player does not possess an Acceleration card' ].
 	firstCardFound isPlayableBy: aPlayer in: self.
 	firstCardFound activateCardEffectFor: aPlayer in: self.
+	discardDeck addCard: firstCardFound.
 	lastCardActivated := firstCardFound.
 	(self handOf: aPlayer) remove: firstCardFound
 ]
@@ -165,6 +167,7 @@ Game >> playCancellationFromPlayer: aPlayer ForCard: aCard [
 		ifNone: [ AssertionFailure signal: 'Cancellation requires an active permanent card to cancel' ].
 	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Cancellation ] ifNone: [ AssertionFailure signal: 'The player does not possess a Cancellation card' ].
 	firstCardFound activateCardEffectFor: aCard in: self.
+	discardDeck addCard: firstCardFound.
 	lastCardActivated := firstCardFound.
 	(self handOf: aPlayer) remove: firstCardFound
 ]
@@ -173,11 +176,11 @@ Game >> playCancellationFromPlayer: aPlayer ForCard: aCard [
 Game >> playOverloadFromPlayer: aPlayer toPlayer: targetPlayer [
 	| firstCardFound |
 	stateOfGame assertCanPlayCard.
-	
 	self assertPlayerExists: targetPlayer.
 	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Overload ] ifNone: [ AssertionFailure signal: 'The player does not possess an Overload card' ].
 	firstCardFound isPlayableBy: aPlayer in: self.
 	firstCardFound activateCardEffectFor: targetPlayer in: self.
+	discardDeck addCard: firstCardFound.
 	lastCardActivated := firstCardFound.
 	(self handOf: aPlayer) remove: firstCardFound
 ]
@@ -191,8 +194,8 @@ Game >> playRedoFromPlayer: aPlayer for: aTarget [
 		ifFalse: [ AssertionFailure signal: 'The target for Redo is not correct for this card' ].
 	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Redo ] ifNone: [ AssertionFailure signal: 'The player does not possess a Redo card' ].
 	firstCardFound activateCardEffectFor: aTarget in: self.
+	discardDeck addCard: firstCardFound.
 	(self handOf: aPlayer) remove: firstCardFound
-	
 ]
 
 { #category : #actions }
@@ -201,20 +204,20 @@ Game >> playRepeatFromPlayer: aPlayer [
 	stateOfGame assertCanPlayCard.
 	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Repeat ] ifNone: [ AssertionFailure signal: 'The player does not possess an Repeat card' ].
 	firstCardFound activateCardEffectFor: self lastTileActivator in: self.
+	discardDeck addCard: firstCardFound.
 	lastCardActivated := firstCardFound.
 	(self handOf: aPlayer) remove: firstCardFound
-	
 ]
 
 { #category : #actions }
 Game >> playSpeedFromPlayer: aPlayer toPlayer: targetPlayer [
 	| firstCardFound |
 	stateOfGame assertCanPlayCard.
-
 	self assertPlayerExists: targetPlayer.
 	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Speed ] ifNone: [ AssertionFailure signal: 'The player does not possess an Speed card' ].
 	firstCardFound isPlayableBy: aPlayer in: self.
 	firstCardFound activateCardEffectFor: targetPlayer in: self.
+	discardDeck addCard: firstCardFound.
 	lastCardActivated := firstCardFound.
 	(self handOf: aPlayer) remove: firstCardFound
 ]
@@ -244,6 +247,11 @@ Game >> preparePlayers: aGroupOfPlayers [
 			self drawCardForPlayer: player.
 			self drawCardForPlayer: player.
 			activePermanentCards at: player put: OrderedCollection new ]
+]
+
+{ #category : #'as yet unclassified' }
+Game >> refillDeck [
+^discardDeck refillDeck 
 ]
 
 { #category : #removing }

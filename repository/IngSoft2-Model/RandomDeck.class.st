@@ -5,13 +5,13 @@ Class {
 }
 
 { #category : #actions }
-RandomDeck >> drawCard [
+RandomDeck >> drawCardForGame: aGame [
 	^ OrderedCollection new
-  add: Overload new;
-  add: Speed new;
-  add: Acceleration new;
-  add: Cancellation new;
-  add: Redo new;
-  add: Repeat new;
-  atRandom
+		add: Overload new;
+		add: Speed new;
+		add: Acceleration new;
+		add: Cancellation new;
+		add: Redo new;
+		add: Repeat new;
+		atRandom
 ]

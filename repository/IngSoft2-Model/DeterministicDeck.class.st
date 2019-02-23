@@ -17,10 +17,11 @@ DeterministicDeck class >> withFutureCards: aCardsArray [
 ]
 
 { #category : #actions }
-DeterministicDeck >> drawCard [
+DeterministicDeck >> drawCardForGame: aGame [
 	| nextCard |
 	futureCards isEmpty
-		ifTrue: [ AssertionFailure signal: 'The deck is out of cards' ]
+		ifTrue: [ futureCards addAll: aGame refillDeck.
+					nextCard := futureCards removeFirst  ]
 		ifFalse: [ nextCard := futureCards removeFirst ].
 	^ nextCard
 ]
