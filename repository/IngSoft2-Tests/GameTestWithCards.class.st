@@ -46,18 +46,20 @@ GameTestWithCards >> createSpeedCardsGenerator [
 
 { #category : #tests }
 GameTestWithCards >> testAccelerationCardAffectsTurnOfPlayer [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game acceleration1 deck |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createAccelerationCardsGenerator.
+	acceleration1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createAccelerationCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game spaceOf: john) equals: 1.
@@ -65,7 +67,7 @@ GameTestWithCards >> testAccelerationCardAffectsTurnOfPlayer [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
@@ -101,10 +103,10 @@ GameTestWithCards >> testAccelerationCardIsCancelled [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	game playCancellationFromPlayer: john ForCard: acceleration1.
+	game playCard: cancellation1 FromPlayer: john ForCard: acceleration1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -133,33 +135,35 @@ GameTestWithCards >> testAccelerationCardIsRedone [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playRedoFromPlayer: tim for: tim.
+	game playCard: redo2 FromPlayer: tim.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 2.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
 ]
 
 { #category : #tests }
 GameTestWithCards >> testAccelerationCardIsRemovedFromHand [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck acceleration1|
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createAccelerationCardsGenerator.
+	acceleration1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createAccelerationCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -188,13 +192,13 @@ GameTestWithCards >> testCancellationCardIsRedone [
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	self assert: (game handOf: tim) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload1 FromPlayer: john forPlayer: tim.
+	game playCard: overload2 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2.
-	game playCancellationFromPlayer: tim ForCard: overload1.
-	game playRedoFromPlayer: tim for: overload2.
+	game playCard: cancellation1 FromPlayer: tim ForCard: overload1.
+	game playCard: redo1 FromPlayer: tim ForCard: overload2.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -224,31 +228,33 @@ GameTestWithCards >> testCancellationWithNoCardsActivated [
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	self
-		should: [ game playCancellationFromPlayer: john ForCard: acceleration1 ]
+		should: [ game playCard: cancellation1 FromPlayer: john ForCard: acceleration1 ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cancellation requires an active permanent card to cancel' ].
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	game playCancellationFromPlayer: john ForCard: acceleration1.
+	game playCard: cancellation1 FromPlayer: john ForCard: acceleration1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
 
 { #category : #tests }
 GameTestWithCards >> testCardsAreNotPlayableAfterGameEnds [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck overload1 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createOverloadCardsGenerator.
+	overload1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: GameTestWithCards new createOverloadCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 2.
 	self deny: game hasEnded.
 	self assert: (game spaceOf: john) equals: 1.
@@ -283,7 +289,31 @@ GameTestWithCards >> testCardsAreNotPlayableAfterGameEnds [
 	self assert: (game lapOf: tim) equals: 0.
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
 	self assert: game hasEnded.
-	self should: [ game playOverloadFromPlayer: tim toPlayer: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cards can not be played after the game has ended' ]
+	self
+		should: [ game playCard: overload1 FromPlayer: john forPlayer: tim ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cards can not be played after the game has ended' ]
+]
+
+{ #category : #tests }
+GameTestWithCards >> testCardsAreRemovedFromDeck [
+	| board john tim players dice dices game deck |
+	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
+	john := 'John'.
+	tim := 'Tim'.
+	players := Array with: john with: tim.
+	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
+	dices := Array with: dice.
+	deck := self createOverloadCardsGenerator.
+	self assert: deck cards size equals: 10.
+	game := Game
+		playedBy: players
+		throwing: dices
+		onABoard: board
+		usingDeck: deck
+		withNumberOfLaps: 3.
+	self deny: game hasEnded.
+	self assert: deck cards size equals: 6
 ]
 
 { #category : #tests }
@@ -325,18 +355,20 @@ GameTestWithCards >> testGameWithRandomCardsIsCreated [
 
 { #category : #tests }
 GameTestWithCards >> testOverloadCardAffectsTurnOfPlayer [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck overload1|
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createOverloadCardsGenerator.
+	overload1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createOverloadCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game spaceOf: john) equals: 1.
@@ -344,7 +376,7 @@ GameTestWithCards >> testOverloadCardAffectsTurnOfPlayer [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
@@ -380,11 +412,11 @@ GameTestWithCards >> testOverloadCardIsCancelled [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCancellationFromPlayer: tim ForCard: overload1.
+	game playCard: cancellation2 FromPlayer: tim ForCard: overload1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -413,33 +445,35 @@ GameTestWithCards >> testOverloadCardIsRedone [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playRedoFromPlayer: tim for: tim.
+	game playCard: redo2 FromPlayer: tim forPlayer: tim.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
 ]
 
 { #category : #tests }
 GameTestWithCards >> testOverloadCardIsRemovedFromHand [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck overload1|
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createOverloadCardsGenerator.
+	overload1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createOverloadCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -447,26 +481,29 @@ GameTestWithCards >> testOverloadCardIsRemovedFromHand [
 
 { #category : #tests }
 GameTestWithCards >> testPermanentCardInOtherPlayerTurn [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck acceleration1 acceleration3 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createAccelerationCardsGenerator.
+	acceleration1 := deck cards at: 1.
+	acceleration3 := deck cards at: 3.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createAccelerationCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	self
-		should: [ game playAccelerationFromPlayer: tim ]
+		should: [ game playCard: acceleration3 FromPlayer: tim ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Permanent Cards can only be played in the player´s turn' ].
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -474,22 +511,24 @@ GameTestWithCards >> testPermanentCardInOtherPlayerTurn [
 
 { #category : #tests }
 GameTestWithCards >> testPlayerDrawsCardFromTile [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck acceleration1 |
 	board := Board composedOf: GameTestWithoutCards new createTilesDrawACardTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createAccelerationCardsGenerator.
+	acceleration1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createAccelerationCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playAccelerationFromPlayer: john.
+	game playCard: acceleration1 FromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
@@ -499,58 +538,33 @@ GameTestWithCards >> testPlayerDrawsCardFromTile [
 
 { #category : #tests }
 GameTestWithCards >> testPlayerPlaysCardHeDoesNotHave [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck overload1 overload2 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createOverloadCardsGenerator.
+	overload1 := deck cards at: 1.
+	overload2 := deck cards at: 2.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createOverloadCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game handOf: tim) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
+	game playCard: overload2 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 0.
 	self
-		should: [ game playOverloadFromPlayer: john toPlayer: tim ]
+		should: [ game playCard: overload1 FromPlayer: john forPlayer: tim ]
 		raise: AssertionFailure
-		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not possess an Overload card' ]
-]
-
-{ #category : #tests }
-GameTestWithCards >> testPlayerPlaysOverloadCardHeDoesNotHave [
-	| board john tim players dice dices game |
-	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
-	john := 'John'.
-	tim := 'Tim'.
-	players := Array with: john with: tim.
-	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
-	dices := Array with: dice.
-	game := Game
-		playedBy: players
-		throwing: dices
-		onABoard: board
-		usingDeck: self createOverloadCardsGenerator
-		withNumberOfLaps: 3.
-	self deny: game hasEnded.
-	self assert: (game handOf: john) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
-	self assert: (game handOf: john) size equals: 1.
-	self assert: (game handOf: tim) size equals: 2.
-	game playOverloadFromPlayer: john toPlayer: tim.
-	self assert: (game handOf: john) size equals: 0.
-	self
-		should: [ game playOverloadFromPlayer: john toPlayer: tim ]
-		raise: AssertionFailure
-		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not possess an Overload card' ]
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not possess a card' ]
 ]
 
 { #category : #tests }
@@ -581,7 +595,7 @@ GameTestWithCards >> testRedoCardWithNoCardsActivated [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	game playRedoFromPlayer: tim for: john.
+	game playCard: redo2 FromPlayer: tim forPlayer: john.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
@@ -617,45 +631,48 @@ GameTestWithCards >> testRepeatCardIsRedone [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	game playRepeatFromPlayer: tim.
+	game playCard: repeat2 FromPlayer: tim.
 	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playRedoFromPlayer: tim for: john.
+	game playCard: redo2 FromPlayer: tim .
 	self assert: (game spaceOf: john) equals: 14.
 	self assert: (game lapOf: john) equals: -1.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	self assert: (game handOf: john) size equals: 2.
+	self assert: (game handOf: john) size equals: 2
 ]
 
 { #category : #tests }
 GameTestWithCards >> testRepeatCardIsUsed [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck repeat1 repeat2 |
 	board := Board composedOf: GameTestWithoutCards new createTilesWormHole.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createRepeatCardsGenerator.
+	repeat1 := deck cards at: 1.
+	repeat2 := deck cards at: 2.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createRepeatCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	game playRepeatFromPlayer: tim.
+	game playCard: repeat1 FromPlayer: john.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	game turnOf: john.
 	self assert: (game spaceOf: john) equals: 2.
 	self assert: (game lapOf: john) equals: 0.
-	game playRepeatFromPlayer: tim.
+	game playCard: repeat2 FromPlayer: john.
 	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1
 ]
@@ -688,7 +705,7 @@ GameTestWithCards >> testRepeatCardWithNoTilesActivated [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	game playRepeatFromPlayer: tim.
+	game playCard: repeat2 FromPlayer: tim.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
@@ -697,18 +714,20 @@ GameTestWithCards >> testRepeatCardWithNoTilesActivated [
 
 { #category : #tests }
 GameTestWithCards >> testSpeedCardAffectsTurnOfPlayer [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck speed1 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createSpeedCardsGenerator.
+	speed1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createSpeedCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game spaceOf: john) equals: 1.
@@ -716,7 +735,7 @@ GameTestWithCards >> testSpeedCardAffectsTurnOfPlayer [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playSpeedFromPlayer: john toPlayer: tim.
+	game playCard: speed1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
@@ -752,11 +771,11 @@ GameTestWithCards >> testSpeedCardIsCancelled [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playSpeedFromPlayer: john toPlayer: tim.
+	game playCard: speed1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCancellationFromPlayer: tim ForCard: speed1.
+	game playCard: cancellation2 FromPlayer: tim ForCard: speed1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -785,32 +804,34 @@ GameTestWithCards >> testSpeedCardIsRedone [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playSpeedFromPlayer: john toPlayer: tim.
+	game playCard: speed1 FromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playRedoFromPlayer: tim for: tim.
+	game playCard: redo2 FromPlayer: tim forPlayer: tim.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
 ]
 
 { #category : #tests }
 GameTestWithCards >> testSpeedCardIsRemovedFromHand [
-	| board john tim players dice dices game |
+	| board john tim players dice dices game deck speed1|
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
 	players := Array with: john with: tim.
 	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
 	dices := Array with: dice.
+	deck := self createSpeedCardsGenerator.
+	speed1 := deck cards at: 1.
 	game := Game
 		playedBy: players
 		throwing: dices
 		onABoard: board
-		usingDeck: self createSpeedCardsGenerator
+		usingDeck: deck
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playSpeedFromPlayer: john toPlayer: john.
+	game playCard: speed1 FromPlayer: john forPlayer: john.
 	self assert: (game handOf: john) size equals: 1
 ]

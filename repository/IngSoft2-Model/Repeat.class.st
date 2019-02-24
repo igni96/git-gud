@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #actions }
-Repeat >> activateCardEffectFor: aPlayer in: aGame [
+Repeat >> activateCardEffectIn: aGame [
 	aGame lastTileActivated activateEffectforGame: aGame forPlayer: aGame lastTileActivator
 ]

@@ -5,8 +5,7 @@ Class {
 }
 
 { #category : #actions }
-Speed >> activateCardEffectFor: aPlayer in: aGame [
-
+Speed >> activateCardEffectForPlayer: aPlayer in: aGame [
 	aGame addPermanentCard: self to: aPlayer
 ]
 

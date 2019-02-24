@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #actions }
-Overload >> activateCardEffectFor: aPlayer in: aGame [
+Overload >> activateCardEffectForPlayer: aPlayer in: aGame [
 	aGame addPermanentCard: self to: aPlayer
 ]
 

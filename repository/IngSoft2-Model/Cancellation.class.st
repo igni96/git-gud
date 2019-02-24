@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #actions }
-Cancellation >> activateCardEffectFor: aCard in: aGame [
+Cancellation >> activateCardEffectForCard: aCard in: aGame [
 	aGame players do: [ :player | aGame removePermanentCard: aCard from: player ]
 ]

@@ -5,5 +5,16 @@ Class {
 }
 
 { #category : #actions }
-NoEffectCard >> activateCardEffectFor: aPlayer in: aGame [
+NoEffectCard >> activateCardEffectForCard: aPlayer in: aGame [
+	
+]
+
+{ #category : #actions }
+NoEffectCard >> activateCardEffectForPlayer: aPlayer in: aGame [
+	
+]
+
+{ #category : #actions }
+NoEffectCard >> activateCardEffectIn: aGame [
+	
 ]

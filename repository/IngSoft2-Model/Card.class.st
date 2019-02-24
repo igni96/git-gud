@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #actions }
-Card >> activateCardEffectFor: aPlayer in: aGame [
-self subclassResponsibility 
+{ #category : #testing }
+Card >> isPlayableBy: aPlayer in: aGame [
+	self subclassResponsibility 
 ]
