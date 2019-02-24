@@ -146,80 +146,38 @@ Game >> placeOf: aPlayer [
 		ifNone: [ AssertionFailure signal: 'The player does not exist' ]
 ]
 
-{ #category : #actions }
-Game >> playAccelerationFromPlayer: aPlayer [
-	| firstCardFound |
+{ #category : #'as yet unclassified' }
+Game >> playCard: aCard FromPlayer: aPlayer [
 	stateOfGame assertCanPlayCard.
-	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Acceleration ] ifNone: [ AssertionFailure signal: 'The player does not possess an Acceleration card' ].
-	firstCardFound isPlayableBy: aPlayer in: self.
-	firstCardFound activateCardEffectFor: aPlayer in: self.
-	discardDeck addCard: firstCardFound.
-	lastCardActivated := firstCardFound.
-	(self handOf: aPlayer) remove: firstCardFound
+	
+	aCard isPlayableBy: aPlayer in: self.
+	aCard activateCardEffectIn: self.
+	discardDeck addCard: aCard.
+	lastCardActivated := aCard.
+	(self handOf: aPlayer) remove: aCard
 ]
 
-{ #category : #actions }
-Game >> playCancellationFromPlayer: aPlayer ForCard: aCard [
-	| firstCardFound |
+{ #category : #'as yet unclassified' }
+Game >> playCard: aCard FromPlayer: aPlayer ForCard: targetCard [
 	stateOfGame assertCanPlayCard.
 	activePermanentCards values
-		detect: [ :cardsOfPlayer | cardsOfPlayer includes: aCard ]
+		detect: [ :cardsOfPlayer | cardsOfPlayer includes: targetCard ]
 		ifNone: [ AssertionFailure signal: 'Cancellation requires an active permanent card to cancel' ].
-	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Cancellation ] ifNone: [ AssertionFailure signal: 'The player does not possess a Cancellation card' ].
-	firstCardFound activateCardEffectFor: aCard in: self.
-	discardDeck addCard: firstCardFound.
-	lastCardActivated := firstCardFound.
-	(self handOf: aPlayer) remove: firstCardFound
+	aCard isPlayableBy: aPlayer in: self.
+	aCard activateCardEffectForCard: targetCard in: self.
+	discardDeck addCard: aCard.
+	lastCardActivated := aCard.
+	(self handOf: aPlayer) remove: aCard
 ]
 
-{ #category : #actions }
-Game >> playOverloadFromPlayer: aPlayer toPlayer: targetPlayer [
-	| firstCardFound |
+{ #category : #'as yet unclassified' }
+Game >> playCard: aCard FromPlayer: aPlayer forPlayer: targetPlayer [
 	stateOfGame assertCanPlayCard.
-	self assertPlayerExists: targetPlayer.
-	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Overload ] ifNone: [ AssertionFailure signal: 'The player does not possess an Overload card' ].
-	firstCardFound isPlayableBy: aPlayer in: self.
-	firstCardFound activateCardEffectFor: targetPlayer in: self.
-	discardDeck addCard: firstCardFound.
-	lastCardActivated := firstCardFound.
-	(self handOf: aPlayer) remove: firstCardFound
-]
-
-{ #category : #actions }
-Game >> playRedoFromPlayer: aPlayer for: aTarget [
-	| firstCardFound |
-	stateOfGame assertCanPlayCard.
-	self assertPlayerExists: aPlayer.
-	(Card allSubclasses includes: aTarget class) | (self players includes: aTarget)
-		ifFalse: [ AssertionFailure signal: 'The target for Redo is not correct for this card' ].
-	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Redo ] ifNone: [ AssertionFailure signal: 'The player does not possess a Redo card' ].
-	firstCardFound activateCardEffectFor: aTarget in: self.
-	discardDeck addCard: firstCardFound.
-	(self handOf: aPlayer) remove: firstCardFound
-]
-
-{ #category : #actions }
-Game >> playRepeatFromPlayer: aPlayer [
-	| firstCardFound |
-	stateOfGame assertCanPlayCard.
-	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Repeat ] ifNone: [ AssertionFailure signal: 'The player does not possess an Repeat card' ].
-	firstCardFound activateCardEffectFor: self lastTileActivator in: self.
-	discardDeck addCard: firstCardFound.
-	lastCardActivated := firstCardFound.
-	(self handOf: aPlayer) remove: firstCardFound
-]
-
-{ #category : #actions }
-Game >> playSpeedFromPlayer: aPlayer toPlayer: targetPlayer [
-	| firstCardFound |
-	stateOfGame assertCanPlayCard.
-	self assertPlayerExists: targetPlayer.
-	firstCardFound := (self handOf: aPlayer) detect: [ :card | card class = Speed ] ifNone: [ AssertionFailure signal: 'The player does not possess an Speed card' ].
-	firstCardFound isPlayableBy: aPlayer in: self.
-	firstCardFound activateCardEffectFor: targetPlayer in: self.
-	discardDeck addCard: firstCardFound.
-	lastCardActivated := firstCardFound.
-	(self handOf: aPlayer) remove: firstCardFound
+	aCard isPlayableBy: aPlayer in: self.
+	aCard activateCardEffectForPlayer: targetPlayer in: self.
+	discardDeck addCard: aCard.
+	lastCardActivated := aCard.
+	(self handOf: aPlayer) remove: aCard
 ]
 
 { #category : #accessing }

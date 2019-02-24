@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #actions }
-InstantCard >> activateCardEffectFor: aPlayer in: aGame [
-	self subclassResponsibility
+{ #category : #testing }
+InstantCard >> isPlayableBy: aPlayer in: aGame [
+	(aGame handOf: aPlayer) detect: [ :card | card = self ] ifNone: [ AssertionFailure signal: 'The player does not possess a card' ].
 ]

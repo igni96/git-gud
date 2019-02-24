@@ -16,12 +16,17 @@ DeterministicDeck class >> withFutureCards: aCardsArray [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+DeterministicDeck >> cards [
+^futureCards 
+]
+
 { #category : #actions }
 DeterministicDeck >> drawCardForGame: aGame [
 	| nextCard |
 	futureCards isEmpty
 		ifTrue: [ futureCards addAll: aGame refillDeck.
-					nextCard := futureCards removeFirst  ]
+			nextCard := futureCards removeFirst ]
 		ifFalse: [ nextCard := futureCards removeFirst ].
 	^ nextCard
 ]
