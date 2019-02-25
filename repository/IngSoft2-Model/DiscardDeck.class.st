@@ -22,11 +22,11 @@ DiscardDeck >> initializeWithoutCards [
 cards:=OrderedCollection new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DiscardDeck >> refillDeck [
 	| aGroupOfCards |
 	cards isEmpty
-		ifTrue: [ AssertionFailure signal: 'The discard deck is empty' ]
+		ifTrue: [ AssertionFailure signal: 'The deck is empty and there are no cards in the discard deck' ]
 		ifFalse: [ aGroupOfCards := cards shuffled.
 			cards removeAll.
 			^ aGroupOfCards ]

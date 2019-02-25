@@ -6,40 +6,48 @@ Class {
 
 { #category : #'extract methods' }
 GameTestWithCards >> createAccelerationCardsGenerator [
-	| deck acceleration aCardGenerator |
-	acceleration := Acceleration new.
+	| deck  aCardGenerator |
 	deck := OrderedCollection new.
-	(1 to: 10) do: [ :each | deck add: acceleration ].
+	(1 to: 10) do: [ :each | deck add: Acceleration new ].
 	aCardGenerator := DeterministicDeck withFutureCards: deck.
 	^ aCardGenerator
 ]
 
 { #category : #'extract methods' }
 GameTestWithCards >> createOverloadCardsGenerator [
-	| deck overload aCardGenerator |
-	overload := Overload new.
+	| deck  aCardGenerator |
+	
 	deck := OrderedCollection new.
-	(1 to: 10) do: [ :each | deck add: overload ].
+	(1 to: 10) do: [ :each | deck add: Overload new ].
 	aCardGenerator := DeterministicDeck withFutureCards: deck.
 	^ aCardGenerator
 ]
 
 { #category : #'extract methods' }
 GameTestWithCards >> createRepeatCardsGenerator [
-	| deck overload aCardGenerator |
-	overload := Repeat new.
+	| deck  aCardGenerator |
+	
 	deck := OrderedCollection new.
-	(1 to: 10) do: [ :each | deck add: overload ].
+	(1 to: 10) do: [ :each | deck add: Repeat new ].
 	aCardGenerator := DeterministicDeck withFutureCards: deck.
 	^ aCardGenerator
 ]
 
 { #category : #'extract methods' }
 GameTestWithCards >> createSpeedCardsGenerator [
-	| deck speed aCardGenerator |
-	speed := Speed new.
+	| deck  aCardGenerator |
+	
 	deck := OrderedCollection new.
-	(1 to: 10) do: [ :each | deck add: speed ].
+	(1 to: 10) do: [ :each | deck add: Speed new ].
+	aCardGenerator := DeterministicDeck withFutureCards: deck.
+	^ aCardGenerator
+]
+
+{ #category : #'extract methods' }
+GameTestWithCards >> createSpeedDeckWithFourCards [
+	| deck aCardGenerator |
+	deck := OrderedCollection new.
+	(1 to: 4) do: [ :each | deck add: Speed new ].
 	aCardGenerator := DeterministicDeck withFutureCards: deck.
 	^ aCardGenerator
 ]
@@ -67,7 +75,7 @@ GameTestWithCards >> testAccelerationCardAffectsTurnOfPlayer [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
@@ -103,10 +111,10 @@ GameTestWithCards >> testAccelerationCardIsCancelled [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	game playCard: cancellation1 FromPlayer: john ForCard: acceleration1.
+	game playCard: cancellation1 fromPlayer: john forCard: acceleration1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -135,11 +143,11 @@ GameTestWithCards >> testAccelerationCardIsRedone [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCard: redo2 FromPlayer: tim.
+	game playCard: redo2 fromPlayer: tim.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 2.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
 ]
@@ -163,7 +171,7 @@ GameTestWithCards >> testAccelerationCardIsRemovedFromHand [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -192,13 +200,13 @@ GameTestWithCards >> testCancellationCardIsRedone [
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	self assert: (game handOf: tim) size equals: 2.
-	game playCard: overload1 FromPlayer: john forPlayer: tim.
-	game playCard: overload2 FromPlayer: john forPlayer: tim.
+	game playCard: overload1 fromPlayer: john forPlayer: tim.
+	game playCard: overload2 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2.
-	game playCard: cancellation1 FromPlayer: tim ForCard: overload1.
-	game playCard: redo1 FromPlayer: tim ForCard: overload2.
+	game playCard: cancellation1 fromPlayer: tim forCard: overload1.
+	game playCard: redo1 fromPlayer: tim forCard: overload2.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -228,13 +236,13 @@ GameTestWithCards >> testCancellationWithNoCardsActivated [
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	self
-		should: [ game playCard: cancellation1 FromPlayer: john ForCard: acceleration1 ]
+		should: [ game playCard: cancellation1 fromPlayer: john forCard: acceleration1 ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cancellation requires an active permanent card to cancel' ].
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	game playCard: cancellation1 FromPlayer: john ForCard: acceleration1.
+	game playCard: cancellation1 fromPlayer: john forCard: acceleration1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -290,7 +298,7 @@ GameTestWithCards >> testCardsAreNotPlayableAfterGameEnds [
 	self should: [ game turnOf: tim ] raise: AssertionFailure withExceptionDo: [ :signal | self assert: signal messageText equals: 'The game has already ended' ].
 	self assert: game hasEnded.
 	self
-		should: [ game playCard: overload1 FromPlayer: john forPlayer: tim ]
+		should: [ game playCard: overload1 fromPlayer: john forPlayer: tim ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cards can not be played after the game has ended' ]
 ]
@@ -314,6 +322,31 @@ GameTestWithCards >> testCardsAreRemovedFromDeck [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: deck cards size equals: 6
+]
+
+{ #category : #tests }
+GameTestWithCards >> testDeckIsRefilledWithDiscardDeck [
+	| board john tim players dice dices game deck speed1 |
+	board := Board composedOf: GameTestWithoutCards new createTilesDrawACardTile.
+	deck := self createSpeedDeckWithFourCards.
+	speed1 := deck cards at: 1.
+	john := 'John'.
+	tim := 'Tim'.
+	players := Array with: john with: tim.
+	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
+	dices := Array with: dice.
+	game := Game
+		playedBy: players
+		throwing: dices
+		onABoard: board
+		usingDeck: deck
+		withNumberOfLaps: 3.
+	self deny: game hasEnded.
+	game playCard: speed1 fromPlayer: john forPlayer: tim.
+	self assert: deck cards size equals: 0.
+	game turnOf: john.
+	self assert: deck cards size equals: 0.
+	self assert: ((game handOf: john) includes: speed1).
 ]
 
 { #category : #tests }
@@ -376,7 +409,7 @@ GameTestWithCards >> testOverloadCardAffectsTurnOfPlayer [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: overload1 FromPlayer: john forPlayer: tim.
+	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
@@ -412,11 +445,11 @@ GameTestWithCards >> testOverloadCardIsCancelled [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: overload1 FromPlayer: john forPlayer: tim.
+	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCard: cancellation2 FromPlayer: tim ForCard: overload1.
+	game playCard: cancellation2 fromPlayer: tim forCard: overload1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -445,11 +478,11 @@ GameTestWithCards >> testOverloadCardIsRedone [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: overload1 FromPlayer: john forPlayer: tim.
+	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCard: redo2 FromPlayer: tim forPlayer: tim.
+	game playCard: redo2 fromPlayer: tim forPlayer: tim.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
 ]
@@ -473,7 +506,7 @@ GameTestWithCards >> testOverloadCardIsRemovedFromHand [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: overload1 FromPlayer: john forPlayer: tim.
+	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
@@ -500,13 +533,36 @@ GameTestWithCards >> testPermanentCardInOtherPlayerTurn [
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
 	self
-		should: [ game playCard: acceleration3 FromPlayer: tim ]
+		should: [ game playCard: acceleration3 fromPlayer: tim ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Permanent Cards can only be played in the player´s turn' ].
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+]
+
+{ #category : #tests }
+GameTestWithCards >> testPlayerDrawsCardFromEmptyDecks [
+	| board john tim players dice dices game deck |
+	board := Board composedOf: GameTestWithoutCards new createTilesDrawACardTile.
+	deck := self createSpeedDeckWithFourCards.
+	john := 'John'.
+	tim := 'Tim'.
+	players := Array with: john with: tim.
+	dice := DeterministicDice withFutureThrows: #(5 1 5 1 5 1 5 1 5 1) andSides: 5.
+	dices := Array with: dice.
+	game := Game
+		playedBy: players
+		throwing: dices
+		onABoard: board
+		usingDeck: deck
+		withNumberOfLaps: 3.
+	self deny: game hasEnded.
+	self
+		should: [ game turnOf: john ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The deck is empty and there are no cards in the discard deck' ]
 ]
 
 { #category : #tests }
@@ -528,7 +584,7 @@ GameTestWithCards >> testPlayerDrawsCardFromTile [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: acceleration1 FromPlayer: john.
+	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
@@ -556,13 +612,13 @@ GameTestWithCards >> testPlayerPlaysCardHeDoesNotHave [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: overload1 FromPlayer: john forPlayer: tim.
+	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game handOf: tim) size equals: 2.
-	game playCard: overload2 FromPlayer: john forPlayer: tim.
+	game playCard: overload2 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 0.
 	self
-		should: [ game playCard: overload1 FromPlayer: john forPlayer: tim ]
+		should: [ game playCard: overload1 fromPlayer: john forPlayer: tim ]
 		raise: AssertionFailure
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'The player does not possess a card' ]
 ]
@@ -595,7 +651,7 @@ GameTestWithCards >> testRedoCardWithNoCardsActivated [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	game playCard: redo2 FromPlayer: tim forPlayer: john.
+	game playCard: redo2 fromPlayer: tim forPlayer: john.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
@@ -631,13 +687,13 @@ GameTestWithCards >> testRepeatCardIsRedone [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	game playCard: repeat2 FromPlayer: tim.
+	game playCard: repeat2 fromPlayer: tim.
 	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: redo2 FromPlayer: tim .
+	game playCard: redo2 fromPlayer: tim .
 	self assert: (game spaceOf: john) equals: 14.
 	self assert: (game lapOf: john) equals: -1.
 	self assert: (game spaceOf: tim) equals: 1.
@@ -666,13 +722,13 @@ GameTestWithCards >> testRepeatCardIsUsed [
 	self deny: game hasEnded.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
-	game playCard: repeat1 FromPlayer: john.
+	game playCard: repeat1 fromPlayer: john.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	game turnOf: john.
 	self assert: (game spaceOf: john) equals: 2.
 	self assert: (game lapOf: john) equals: 0.
-	game playCard: repeat2 FromPlayer: john.
+	game playCard: repeat2 fromPlayer: john.
 	self assert: (game spaceOf: john) equals: 18.
 	self assert: (game lapOf: john) equals: -1
 ]
@@ -705,7 +761,7 @@ GameTestWithCards >> testRepeatCardWithNoTilesActivated [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
-	game playCard: repeat2 FromPlayer: tim.
+	game playCard: repeat2 fromPlayer: tim.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.
@@ -735,7 +791,7 @@ GameTestWithCards >> testSpeedCardAffectsTurnOfPlayer [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: speed1 FromPlayer: john forPlayer: tim.
+	game playCard: speed1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	game turnOf: tim.
@@ -771,11 +827,11 @@ GameTestWithCards >> testSpeedCardIsCancelled [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: speed1 FromPlayer: john forPlayer: tim.
+	game playCard: speed1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCard: cancellation2 FromPlayer: tim ForCard: speed1.
+	game playCard: cancellation2 fromPlayer: tim forCard: speed1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
 ]
@@ -804,11 +860,11 @@ GameTestWithCards >> testSpeedCardIsRedone [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: speed1 FromPlayer: john forPlayer: tim.
+	game playCard: speed1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
-	game playCard: redo2 FromPlayer: tim forPlayer: tim.
+	game playCard: redo2 fromPlayer: tim forPlayer: tim.
 	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
 	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
 ]
@@ -832,6 +888,6 @@ GameTestWithCards >> testSpeedCardIsRemovedFromHand [
 		withNumberOfLaps: 3.
 	self deny: game hasEnded.
 	self assert: (game handOf: john) size equals: 2.
-	game playCard: speed1 FromPlayer: john forPlayer: john.
+	game playCard: speed1 fromPlayer: john forPlayer: john.
 	self assert: (game handOf: john) size equals: 1
 ]
