@@ -146,8 +146,8 @@ Game >> placeOf: aPlayer [
 		ifNone: [ AssertionFailure signal: 'The player does not exist' ]
 ]
 
-{ #category : #'as yet unclassified' }
-Game >> playCard: aCard FromPlayer: aPlayer [
+{ #category : #actions }
+Game >> playCard: aCard fromPlayer: aPlayer [
 	stateOfGame assertCanPlayCard.
 	
 	aCard isPlayableBy: aPlayer in: self.
@@ -157,8 +157,8 @@ Game >> playCard: aCard FromPlayer: aPlayer [
 	(self handOf: aPlayer) remove: aCard
 ]
 
-{ #category : #'as yet unclassified' }
-Game >> playCard: aCard FromPlayer: aPlayer ForCard: targetCard [
+{ #category : #actions }
+Game >> playCard: aCard fromPlayer: aPlayer forCard: targetCard [
 	stateOfGame assertCanPlayCard.
 	activePermanentCards values
 		detect: [ :cardsOfPlayer | cardsOfPlayer includes: targetCard ]
@@ -170,8 +170,8 @@ Game >> playCard: aCard FromPlayer: aPlayer ForCard: targetCard [
 	(self handOf: aPlayer) remove: aCard
 ]
 
-{ #category : #'as yet unclassified' }
-Game >> playCard: aCard FromPlayer: aPlayer forPlayer: targetPlayer [
+{ #category : #actions }
+Game >> playCard: aCard fromPlayer: aPlayer forPlayer: targetPlayer [
 	stateOfGame assertCanPlayCard.
 	aCard isPlayableBy: aPlayer in: self.
 	aCard activateCardEffectForPlayer: targetPlayer in: self.
@@ -207,7 +207,7 @@ Game >> preparePlayers: aGroupOfPlayers [
 			activePermanentCards at: player put: OrderedCollection new ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 Game >> refillDeck [
 ^discardDeck refillDeck 
 ]

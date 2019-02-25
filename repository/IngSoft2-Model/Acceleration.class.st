@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 Acceleration >> activateCardEffectIn: aGame [
 	aGame players do: [ :player | aGame addPermanentCard: self to: player ]
 ]

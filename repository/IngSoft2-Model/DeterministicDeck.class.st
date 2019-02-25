@@ -16,7 +16,7 @@ DeterministicDeck class >> withFutureCards: aCardsArray [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accesing }
 DeterministicDeck >> cards [
 ^futureCards 
 ]
