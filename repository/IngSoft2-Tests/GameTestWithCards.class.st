@@ -344,9 +344,12 @@ GameTestWithCards >> testDeckIsRefilledWithDiscardDeck [
 	self deny: game hasEnded.
 	game playCard: speed1 fromPlayer: john forPlayer: tim.
 	self assert: deck cards size equals: 0.
+	self assert: (game handOf: john) size equals: 1.
 	game turnOf: john.
 	self assert: deck cards size equals: 0.
-	self assert: ((game handOf: john) includes: speed1).
+	self assert: (game handOf: john) size equals: 2.
+	self assert: ((game handOf: john) includes: speed1)
+	
 ]
 
 { #category : #tests }
