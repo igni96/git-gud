@@ -6,5 +6,5 @@ Class {
 
 { #category : #actions }
 Repeat >> activateCardEffectIn: aGame [
-	aGame lastTileActivated activateEffectforGame: aGame forPlayer: aGame lastTileActivator
+	aGame lastTileActivated activateEffectIn: aGame forPlayer: aGame lastTileActivator
 ]
