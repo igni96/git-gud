@@ -2,7 +2,7 @@ Class {
 	#name : #DeterministicDeck,
 	#superclass : #Deck,
 	#instVars : [
-		'futureCards'
+		'cards'
 	],
 	#classInstVars : [
 		'futureCards'
@@ -18,21 +18,21 @@ DeterministicDeck class >> withFutureCards: aCardsArray [
 
 { #category : #accesing }
 DeterministicDeck >> cards [
-^futureCards 
+^cards 
 ]
 
 { #category : #actions }
-DeterministicDeck >> drawCardForGame: aGame [
+DeterministicDeck >> drawCardInGame: aGame [
 	
 
-	futureCards isEmpty
-		ifTrue: [ futureCards addAll: aGame refillDeck ].
-	^ futureCards removeFirst
+	cards isEmpty
+		ifTrue: [ cards addAll: aGame refillDeck ].
+	^ cards removeFirst
 	
 ]
 
 { #category : #initialization }
 DeterministicDeck >> initializeWithFutureCards: aCardsArray [
-	futureCards := aCardsArray.
+	cards := aCardsArray.
 	
 ]

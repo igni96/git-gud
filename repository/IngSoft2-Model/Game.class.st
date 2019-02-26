@@ -89,7 +89,7 @@ Game >> currentTilefor: aPlayer [
 
 { #category : #actions }
 Game >> drawCardForPlayer: aPlayer [
-	(self handOf: aPlayer) add: (cardGenerator drawCardForGame: self)
+	(self handOf: aPlayer) add: (cardGenerator drawCardInGame: self)
 ]
 
 { #category : #accessing }
@@ -251,7 +251,7 @@ Game >> whenGameHasEndedWonBy: aPlayer [
 ]
 
 { #category : #actions }
-Game >> whenGameIsBeingPlayedwonBy: aPlayer [
+Game >> whenGameIsBeingPlayedWonBy: aPlayer [
 	^ AssertionFailure signal: 'The game has not ended yet'
 ]
 

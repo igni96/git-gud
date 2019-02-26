@@ -21,5 +21,5 @@ aGame turnOfWhenGameIsBeingPlayed: aPlayer.
 
 { #category : #actions }
 GamePlaying >> wonBy: aPlayer in: aGame [
-	^ aGame whenGameIsBeingPlayedwonBy: aPlayer
+	^ aGame whenGameIsBeingPlayedWonBy: aPlayer
 ]
