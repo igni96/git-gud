@@ -628,7 +628,7 @@ GameTestWithCards >> testPlayerPlaysCardHeDoesNotHave [
 
 { #category : #tests }
 GameTestWithCards >> testRedoCardWithNoCardsActivated [
-	| board john tim players dice dices game deck repeat1 repeat2 repeat3 redo1 redo2 redo3 |
+	| board john tim players dice dices game deck repeat1 repeat2 repeat3 redo1 redo2 redo3 redo4 redo5 |
 	deck := OrderedCollection new.
 	deck add: (repeat1 := Repeat new).
 	deck add: (redo1 := Redo new).
@@ -636,6 +636,8 @@ GameTestWithCards >> testRedoCardWithNoCardsActivated [
 	deck add: (redo2 := Redo new).
 	deck add: (repeat3 := Repeat new).
 	deck add: (redo3 := Redo new).
+	deck add: (redo4 := Redo new).
+	deck add: (redo5 := Redo new).
 	board := Board composedOf: GameTestWithoutCards new createTilesWormHole.
 	john := 'John'.
 	tim := 'Tim'.
@@ -655,6 +657,13 @@ GameTestWithCards >> testRedoCardWithNoCardsActivated [
 	self assert: (game spaceOf: tim) equals: 1.
 	self assert: (game lapOf: tim) equals: 0.
 	game playCard: redo2 fromPlayer: tim forPlayer: john.
+	game drawCardForPlayer: tim.
+	game drawCardForPlayer: tim.
+	game drawCardForPlayer: tim.
+	game drawCardForPlayer: tim.
+	game drawCardForPlayer: tim.
+	game playCard: redo3 fromPlayer: tim forCard: repeat1 .
+	game playCard: redo4 fromPlayer: tim.
 	self assert: (game spaceOf: john) equals: 1.
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 1.

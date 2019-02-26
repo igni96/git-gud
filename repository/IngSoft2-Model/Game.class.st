@@ -148,22 +148,23 @@ Game >> placeOf: aPlayer [
 { #category : #actions }
 Game >> playCard: aCard fromPlayer: aPlayer [
 	stateOfGame assertCanPlayCard.
-	
 	aCard isPlayableBy: aPlayer in: self.
 	aCard activateCardEffectIn: self.
 	discardDeck addCard: aCard.
-	lastCardActivated := aCard.
+	(aCard class = Redo)
+	ifFalse: [lastCardActivated := aCard].
 	(self handOf: aPlayer) remove: aCard
 ]
 
 { #category : #actions }
 Game >> playCard: aCard fromPlayer: aPlayer forCard: targetCard [
 	stateOfGame assertCanPlayCard.
-	
 	aCard isPlayableBy: aPlayer in: self.
 	aCard activateCardEffectForCard: targetCard in: self.
 	discardDeck addCard: aCard.
-	lastCardActivated := aCard.
+	aCard class = Redo
+		ifFalse: [ lastCardActivated := aCard ].
+	
 	(self handOf: aPlayer) remove: aCard
 ]
 
@@ -173,7 +174,8 @@ Game >> playCard: aCard fromPlayer: aPlayer forPlayer: targetPlayer [
 	aCard isPlayableBy: aPlayer in: self.
 	aCard activateCardEffectForPlayer: targetPlayer in: self.
 	discardDeck addCard: aCard.
-	lastCardActivated := aCard.
+	aCard class = Redo
+		ifFalse: [ lastCardActivated := aCard ].
 	(self handOf: aPlayer) remove: aCard
 ]
 
@@ -211,7 +213,9 @@ Game >> refillDeck [
 
 { #category : #removing }
 Game >> removePermanentCard: aCard from: aPlayer [
-	(activePermanentCards at: aPlayer) removeAllSuchThat: [ :card | aCard = card ]
+	(activePermanentCards at: aPlayer) removeAllSuchThat: [ :card | aCard = card ].
+
+	
 ]
 
 { #category : #accessing }
