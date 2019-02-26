@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #actions }
-RandomDeck >> drawCardForGame: aGame [
+RandomDeck >> drawCardInGame: aGame [
 	^ OrderedCollection new
 		add: Overload new;
 		add: Speed new;

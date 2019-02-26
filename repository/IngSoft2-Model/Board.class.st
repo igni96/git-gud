@@ -9,7 +9,7 @@ Class {
 
 { #category : #initialization }
 Board class >> composedOf: aGroupOfTiles [
-	^ self new initializeComposedOfTiles: aGroupOfTiles.
+	^ self new initializeComposedOf: aGroupOfTiles.
 ]
 
 { #category : #'instance creation' }
@@ -21,7 +21,7 @@ Board class >> randomlyComposedOf: anAmountOfTiles [
 ]
 
 { #category : #initialization }
-Board >> initializeComposedOfTiles: aGroupOfTiles. [
+Board >> initializeComposedOf: aGroupOfTiles. [
 tiles:=aGroupOfTiles.
 ]
 
