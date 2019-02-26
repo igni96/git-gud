@@ -23,12 +23,12 @@ DeterministicDeck >> cards [
 
 { #category : #actions }
 DeterministicDeck >> drawCardForGame: aGame [
-	| nextCard |
+	
+
 	futureCards isEmpty
-		ifTrue: [ futureCards addAll: aGame refillDeck.
-			nextCard := futureCards removeFirst ]
-		ifFalse: [ nextCard := futureCards removeFirst ].
-	^ nextCard
+		ifTrue: [ futureCards addAll: aGame refillDeck ].
+	^ futureCards removeFirst
+	
 ]
 
 { #category : #initialization }

@@ -10,3 +10,8 @@ PermanentCard >> isPlayableBy: aPlayer in: aGame [
 	aPlayer = aGame currentPlayer
 		ifFalse: [ AssertionFailure signal: 'Permanent Cards can only be played in the player´s turn' ]
 ]
+
+{ #category : #actions }
+PermanentCard >> tilesToMove [
+self subclassResponsibility 
+]

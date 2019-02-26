@@ -13,7 +13,7 @@ MoonWalk class >> ofValue: anInteger [
 ]
 
 { #category : #actions }
-MoonWalk >> activateEffectforGame: aGame forPlayer: aPlayer [
+MoonWalk >> activateEffectIn: aGame forPlayer: aPlayer [
 	(aGame players copyWithout: aPlayer) do: [ :each | aGame changePositionOf: each by: backwardValue negated ]
 ]
 

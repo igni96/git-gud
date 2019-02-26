@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #actions }
-SpeedUp >> activateEffectforGame: aGame forPlayer: aPlayer [
+SpeedUp >> activateEffectIn: aGame forPlayer: aPlayer [
 	aGame changePositionOf: aPlayer by: 4
 ]

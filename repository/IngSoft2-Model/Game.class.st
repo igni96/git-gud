@@ -185,7 +185,7 @@ Game >> playTurnFor: aPlayer [
 	self changePositionOf: aPlayer by: (self calculateTilesToMoveFor: aPlayer).
 	
 	lastTileActivated := (self currentTilefor: aPlayer) -> aPlayer.
-	(self currentTilefor: aPlayer) activateEffectforGame: self forPlayer: self currentPlayer.
+	(self currentTilefor: aPlayer) activateEffectIn: self forPlayer: self currentPlayer.
 
 	(self lapOf: aPlayer) >= winningLap
 		ifTrue: [ self updateGameState ]
@@ -209,7 +209,7 @@ Game >> preparePlayers: aGroupOfPlayers [
 
 { #category : #actions }
 Game >> refillDeck [
-^discardDeck refillDeck 
+	^ discardDeck refillDeck shuffle
 ]
 
 { #category : #removing }

@@ -27,7 +27,7 @@ DiscardDeck >> refillDeck [
 	| aGroupOfCards |
 	cards isEmpty
 		ifTrue: [ AssertionFailure signal: 'The deck is empty and there are no cards in the discard deck' ]
-		ifFalse: [ aGroupOfCards := cards shuffled.
+		ifFalse: [ aGroupOfCards := cards copy.
 			cards removeAll.
 			^ aGroupOfCards ]
 ]

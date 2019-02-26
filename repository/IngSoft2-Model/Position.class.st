@@ -32,7 +32,7 @@ Position >> currentSpace [
 ]
 
 { #category : #initialization }
-Position >> initializeWithSpace: aNumberOfSpaces andLap: ANumberOfLaps [
+Position >> initializeWithSpace: aNumberOfSpaces andLap: aNumberOfLaps [
 space:=aNumberOfSpaces.
-lap:=ANumberOfLaps
+lap:=aNumberOfLaps
 ]
