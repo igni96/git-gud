@@ -35,6 +35,16 @@ Game class >> playedBy: aPlayerArray throwing: aDiceArray onABoard: aBoard using
 		withNumberOfLaps: aNumberOfLaps
 ]
 
+{ #category : #accessing }
+Game >> activePermanentCards [
+^activePermanentCards values 
+]
+
+{ #category : #accessing }
+Game >> activePermanentCardsfor: aPlayer [
+	^ (activePermanentCards at: aPlayer)
+]
+
 { #category : #adding }
 Game >> addPermanentCard: aCard to: aPlayer [
 (activePermanentCards at: aPlayer) add: aCard
@@ -47,21 +57,10 @@ Game >> advanceTurn [
 		ifFalse: [ turn + 1 ]
 ]
 
-{ #category : #accessing }
-Game >> amountOfActivePermanentCardsfor: aPlayer [
-^(activePermanentCards at: aPlayer)size.
-]
-
 { #category : #asserting }
 Game >> assertCanPlay: aPlayer [
 	^ (self currentPlayer ) = aPlayer
 		ifFalse: [ AssertionFailure signal: 'It´s not the player´s turn' ]
-]
-
-{ #category : #asserting }
-Game >> assertPlayerExists: aPlayer [
-((self players) includes: aPlayer)
-ifFalse: [ AssertionFailure signal: 'The player does not exist' ].
 ]
 
 { #category : #actions }
@@ -160,9 +159,7 @@ Game >> playCard: aCard fromPlayer: aPlayer [
 { #category : #actions }
 Game >> playCard: aCard fromPlayer: aPlayer forCard: targetCard [
 	stateOfGame assertCanPlayCard.
-	activePermanentCards values
-		detect: [ :cardsOfPlayer | cardsOfPlayer includes: targetCard ]
-		ifNone: [ AssertionFailure signal: 'Cancellation requires an active permanent card to cancel' ].
+	
 	aCard isPlayableBy: aPlayer in: self.
 	aCard activateCardEffectForCard: targetCard in: self.
 	discardDeck addCard: aCard.
