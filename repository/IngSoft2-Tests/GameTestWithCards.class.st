@@ -83,8 +83,8 @@ GameTestWithCards >> testAccelerationCardAffectsTurnOfPlayer [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: tim) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+	self assert: (game activePermanentCardsfor: john)size equals: 1.
+	self assert: (game activePermanentCardsfor: tim)size equals: 1
 ]
 
 { #category : #tests }
@@ -113,10 +113,10 @@ GameTestWithCards >> testAccelerationCardIsCancelled [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 1.
 	game playCard: cancellation1 fromPlayer: john forCard: acceleration1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 0
 ]
 
 { #category : #tests }
@@ -145,16 +145,16 @@ GameTestWithCards >> testAccelerationCardIsRedone [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 1.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1.
 	game playCard: redo2 fromPlayer: tim.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 2.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
+	self assert: (game activePermanentCardsfor: john) size equals: 2.
+	self assert: (game activePermanentCardsfor: tim) size equals: 2
 ]
 
 { #category : #tests }
 GameTestWithCards >> testAccelerationCardIsRemovedFromHand [
-	| board john tim players dice dices game deck acceleration1|
+	| board john tim players dice dices game deck acceleration1 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
@@ -173,8 +173,8 @@ GameTestWithCards >> testAccelerationCardIsRemovedFromHand [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+	self assert: (game activePermanentCardsfor: john) size equals: 1.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1
 ]
 
 { #category : #tests }
@@ -203,12 +203,12 @@ GameTestWithCards >> testCancellationCardIsRedone [
 	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	game playCard: overload2 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2.
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 2.
 	game playCard: cancellation1 fromPlayer: tim forCard: overload1.
 	game playCard: redo1 fromPlayer: tim forCard: overload2.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 0
 ]
 
 { #category : #tests }
@@ -241,10 +241,10 @@ GameTestWithCards >> testCancellationWithNoCardsActivated [
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Cancellation requires an active permanent card to cancel' ].
 	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 1.
 	game playCard: cancellation1 fromPlayer: john forCard: acceleration1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 0
 ]
 
 { #category : #tests }
@@ -391,7 +391,7 @@ GameTestWithCards >> testGameWithRandomCardsIsCreated [
 
 { #category : #tests }
 GameTestWithCards >> testOverloadCardAffectsTurnOfPlayer [
-	| board john tim players dice dices game deck overload1|
+	| board john tim players dice dices game deck overload1 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
@@ -420,8 +420,8 @@ GameTestWithCards >> testOverloadCardAffectsTurnOfPlayer [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 11.
 	self assert: (game lapOf: tim) equals: -1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1
 ]
 
 { #category : #tests }
@@ -450,11 +450,11 @@ GameTestWithCards >> testOverloadCardIsCancelled [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1.
 	game playCard: cancellation2 fromPlayer: tim forCard: overload1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 0
 ]
 
 { #category : #tests }
@@ -483,16 +483,16 @@ GameTestWithCards >> testOverloadCardIsRedone [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1.
 	game playCard: redo2 fromPlayer: tim forPlayer: tim.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 2
 ]
 
 { #category : #tests }
 GameTestWithCards >> testOverloadCardIsRemovedFromHand [
-	| board john tim players dice dices game deck overload1|
+	| board john tim players dice dices game deck overload1 |
 	board := Board composedOf: GameTestWithoutCards new createTilesNormalTile.
 	john := 'John'.
 	tim := 'Tim'.
@@ -511,8 +511,8 @@ GameTestWithCards >> testOverloadCardIsRemovedFromHand [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: overload1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1
 ]
 
 { #category : #tests }
@@ -541,8 +541,8 @@ GameTestWithCards >> testPermanentCardInOtherPlayerTurn [
 		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Permanent Cards can only be played in the player´s turn' ].
 	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+	self assert: (game activePermanentCardsfor: john) size equals: 1.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1
 ]
 
 { #category : #tests }
@@ -589,8 +589,8 @@ GameTestWithCards >> testPlayerDrawsCardFromTile [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: acceleration1 fromPlayer: john.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 1.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1.
 	game turnOf: john.
 	self assert: (game handOf: john) size equals: 2
 ]
@@ -802,8 +802,8 @@ GameTestWithCards >> testSpeedCardAffectsTurnOfPlayer [
 	self assert: (game lapOf: john) equals: 0.
 	self assert: (game spaceOf: tim) equals: 3.
 	self assert: (game lapOf: tim) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1
 ]
 
 { #category : #tests }
@@ -832,11 +832,11 @@ GameTestWithCards >> testSpeedCardIsCancelled [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: speed1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1.
 	game playCard: cancellation2 fromPlayer: tim forCard: speed1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 0
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 0
 ]
 
 { #category : #tests }
@@ -865,11 +865,11 @@ GameTestWithCards >> testSpeedCardIsRedone [
 	self assert: (game handOf: john) size equals: 2.
 	game playCard: speed1 fromPlayer: john forPlayer: tim.
 	self assert: (game handOf: john) size equals: 1.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 1.
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 1.
 	game playCard: redo2 fromPlayer: tim forPlayer: tim.
-	self assert: (game amountOfActivePermanentCardsfor: john) equals: 0.
-	self assert: (game amountOfActivePermanentCardsfor: tim) equals: 2
+	self assert: (game activePermanentCardsfor: john) size equals: 0.
+	self assert: (game activePermanentCardsfor: tim) size equals: 2
 ]
 
 { #category : #tests }
